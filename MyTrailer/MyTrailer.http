@@ -1,0 +1,6 @@
+@MyTrailer_HostAddress = http://localhost:5128
+
+GET {{MyTrailer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
