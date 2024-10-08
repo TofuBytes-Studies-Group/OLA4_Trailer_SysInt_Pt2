@@ -1,3 +1,4 @@
+
 using MyTrailer.Infrastructure;
 
 namespace MyTrailer.Application.Services
