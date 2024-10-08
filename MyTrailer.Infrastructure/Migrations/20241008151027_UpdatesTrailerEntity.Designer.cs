@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyTrailer.Infrastructure.Persistence;
 
@@ -10,9 +11,11 @@ using MyTrailer.Infrastructure.Persistence;
 namespace MyTrailer.Infrastructure.Migrations
 {
     [DbContext(typeof(MyTrailerDbContext))]
-    partial class MyTrailerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241008151027_UpdatesTrailerEntity")]
+    partial class UpdatesTrailerEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");

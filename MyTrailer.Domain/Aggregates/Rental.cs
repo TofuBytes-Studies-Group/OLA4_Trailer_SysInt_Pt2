@@ -10,8 +10,8 @@ public class Rental
     public Customer Customer { get; private set; }
     public Trailer Trailer { get; private init; }
     public Price Price { get; private set; }
-    private DateTime StartDate { get; set; }
-    private DateTime EndDate { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
     public bool IsInsured { get; private set; }
 
     protected Rental()
@@ -36,25 +36,24 @@ public class Rental
     }
 
     // Factory method for creating Rental instances
-    public static Rental Create(Customer customer, Trailer trailer, DateTime startDate, DateTime endDate,
-        bool isInsured)
+    public static Rental Create(Customer customer, Trailer trailer, DateTime startDate, DateTime endDate, bool isInsured)
     {
         return new Rental(customer, trailer, startDate, endDate, isInsured);
     }
 
     private void RentTrailer()
     {
-        if (Trailer is { IsBooked: true })
+        if (Trailer is { IsRented: true })
         {
             throw new InvalidOperationException("Trailer is already booked for the selected dates");
         }
 
-        Trailer.IsBooked = true;
+        Trailer.IsRented = true;
     }
 
     private bool IsReturnOverdue()
     {
-        return DateTime.Now > EndDate && Trailer is { IsBooked: true };
+        return DateTime.Now > EndDate && Trailer is { IsRented: true };
     }
 
     public void CalculatePrice()
