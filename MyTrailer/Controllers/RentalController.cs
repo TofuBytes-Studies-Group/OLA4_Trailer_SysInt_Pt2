@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyTrailer.API.DTOs;
 using MyTrailer.Application.Services;
 
+
 namespace MyTrailer.Controllers;
 
 [ApiController]
