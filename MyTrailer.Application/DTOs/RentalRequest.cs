@@ -1,12 +1,18 @@
-namespace MyTrailer.API.DTOs;
+using System.ComponentModel.DataAnnotations;
+
+namespace MyTrailer.Application.DTOs;
 
 public class RentalRequest
 {
     public int CustomerId { get; set; }
+    
     public int TrailerId { get; set; }
+    
+    [DataType(DataType.Date)]
     public DateTime StartDate { get; set; }
+    
+    [DataType(DataType.Date)]
     public DateTime EndDate { get; set; }
-    public string? City { get; set; }
-    public string? ZipCode { get; set; }
-    public int Price { get; set; }
+    
+    public bool IsInsured { get; set; }
 }

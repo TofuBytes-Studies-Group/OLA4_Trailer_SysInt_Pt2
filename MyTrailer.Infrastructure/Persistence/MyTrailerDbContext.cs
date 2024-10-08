@@ -16,7 +16,8 @@ public class MyTrailerDbContext(DbContextOptions<MyTrailerDbContext> options) : 
         {
             builder.OwnsOne(r => r.Price, priceBuilder =>
             {
-                priceBuilder.Property(p => p.Amount).HasColumnName("Amount"); // Specify the column name in the database
+                priceBuilder.Property(p => p.Amount)
+                    .HasColumnName("TotalPrice"); // Specify the column name in the database
             });
         });
     }
