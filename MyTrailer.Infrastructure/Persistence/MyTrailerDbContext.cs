@@ -1,16 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyTrailer.Domain.Aggregates;
 using MyTrailer.Domain.Entities;
+using MyTrailer.Domain.ValueObjects;
 
 namespace MyTrailer.Infrastructure.Persistence;
 public class MyTrailerDbContext(DbContextOptions<MyTrailerDbContext> options) : DbContext(options)
 {
     public DbSet<Trailer> Trailers { get; set; }
-    public DbSet<Rental> Rentals { get; set; }
+    public DbSet<Rental> Rentals { get; set; } // Aggregate root
+    public DbSet<Customer> Customers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-        // Customize entity mappings here if necessary
+        modelBuilder.Entity<Rental>(builder =>
+        {
+            builder.OwnsOne(r => r.Price, priceBuilder =>
+            {
+                priceBuilder.Property(p => p.Amount).HasColumnName("Amount"); // Specify the column name in the database
+            });
+        });
     }
 }
