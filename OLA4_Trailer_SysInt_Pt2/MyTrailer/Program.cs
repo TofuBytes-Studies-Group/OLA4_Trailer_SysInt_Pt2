@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<MyTrailerDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("MyTrailerDatabase")));
 builder.Services.AddScoped<RentalService>();
+builder.Services.AddHttpClient<PaymentService>();
 builder.Services.AddScoped<IRentalRepository, RentalRepository>();
 builder.Services.AddScoped<ITrailerRepository, TrailerRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();

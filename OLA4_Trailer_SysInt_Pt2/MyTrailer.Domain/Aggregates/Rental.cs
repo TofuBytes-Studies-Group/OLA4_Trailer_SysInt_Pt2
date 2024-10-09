@@ -32,7 +32,24 @@ public class Rental
         }
 
         RentTrailer();
-        CalculatePrice();
+        
+    }
+    
+    public Rental(Customer customer, Trailer trailer, Price price, DateTime startDate, DateTime endDate, bool isInsured)
+    {
+        Customer = customer ?? throw new ArgumentNullException(nameof(customer));
+        Trailer = trailer ?? throw new ArgumentNullException(nameof(trailer));
+        Price = price;
+        StartDate = startDate;
+        EndDate = endDate;
+        IsInsured = isInsured;
+        
+        if (StartDate >= EndDate)
+        {
+            throw new ArgumentException("Start date must be earlier than end date.");
+        }
+
+        RentTrailer();
     }
 
     // Factory method for creating Rental instances
@@ -55,17 +72,8 @@ public class Rental
     {
         return DateTime.Now > EndDate && Trailer is { IsRented: true };
     }
+    
+  
 
-    public void CalculatePrice()
-    {
-        decimal amount = IsInsured switch //amount er sat til samme værdi som IsInsured switch / boolean
-        {
-            true when IsReturnOverdue() => 125, // Hvis IsInsured er true og IsReturnOverdue er true, så er amount 125
-            true => 50, // Hvis IsInsured er true, så er amount 50
-            _ => IsReturnOverdue()
-                ? 75
-                : 0 // Hvis ingen af dem er true, så er amount 75 HVIS IsReturnOverdue er true, ellers er amount 0
-        };
-        Price = new Price(amount); // Price er sat til amount
-    }
+   
 }

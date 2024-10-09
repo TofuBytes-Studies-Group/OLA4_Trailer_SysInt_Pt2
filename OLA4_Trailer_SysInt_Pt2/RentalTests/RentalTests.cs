@@ -14,7 +14,6 @@ public class RentalTests
         var trailer = new Trailer( 1, "Model", "locationlocationlocation", false);
         var rental = new Rental(customer, trailer, DateTime.Now.AddDays(-2), DateTime.Now.AddDays(-1), true);
         
-        rental.CalculatePrice();
         Assert.Equal(125, rental.Price.Amount);
     }
 
@@ -25,7 +24,6 @@ public class RentalTests
         var trailer = new Trailer(1, "Model", "locationlocation", false);
         var rental = new Rental(customer, trailer, DateTime.Now, DateTime.Now.AddDays(1), true);
         
-        rental.CalculatePrice();
         Assert.Equal(50, rental.Price.Amount);
     }
 
@@ -36,7 +34,6 @@ public class RentalTests
         var trailer = new Trailer(1, "Model", "Jem&Fix/Farum", false);
         var rental = new Rental(customer, trailer, DateTime.Now.AddDays(-2), DateTime.Now.AddDays(-1), false);
 
-        rental.CalculatePrice();
         Assert.Equal(75, rental.Price.Amount);
     }
 
@@ -47,7 +44,6 @@ public class RentalTests
         var trailer = new Trailer (1, "Model", "Jem&Fix/Farum", false);
         var rental = new Rental(customer, trailer, DateTime.Now, DateTime.Now.AddDays(1), false);
 
-        rental.CalculatePrice();
         Assert.Equal(0, rental.Price.Amount);
     }
 }
