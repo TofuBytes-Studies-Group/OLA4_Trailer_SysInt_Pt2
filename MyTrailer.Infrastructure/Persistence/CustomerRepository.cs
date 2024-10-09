@@ -33,10 +33,11 @@ public class CustomerRepository : ICustomerRepository
     public void Delete(int id)
     {
         var customer = GetById(id);
-        if (customer != null)
+        if (customer == null)
         {
-            _context.Customers.Remove(customer);
+            throw new InvalidOperationException();
         }
+        _context.Customers.Remove(customer);
     }
 
     public void SaveChanges()
