@@ -14,7 +14,7 @@ namespace MyTrailer.Application.Services
 
         public async Task<int> FetchInsurancePrice(bool isInsured)
         {
-            var response = await _httpClient.GetAsync("http://localhost:5201/Price/GetInsurancePrice");
+            var response = await _httpClient.GetAsync("http://localhost:5201/Price/GetInsurancePrice?isInsured=" + isInsured);
             response.EnsureSuccessStatusCode();
 
             var priceString = await response.Content.ReadAsStringAsync();
