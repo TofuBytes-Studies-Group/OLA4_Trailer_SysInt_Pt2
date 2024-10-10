@@ -13,14 +13,14 @@ public class RentalController : ControllerBase
     private readonly RentalService _rentalService;
     private readonly ICustomerRepository _customerRepository;
 
-    public RentalController(RentalService rentalService, ICustomerRepository customerRepository)
+    public RentalController(RentalService rentalService, ICustomerRepository customerRepository, PaymentService paymentService)
     {
         _rentalService = rentalService;
         _customerRepository = customerRepository;
     }
 
     [HttpPost] 
-    public IActionResult CreateRental([FromBody] RentalRequest request)
+    public async Task<IActionResult> CreateRental([FromBody] RentalRequest request)
     {
         if (request == null)
         {
@@ -29,14 +29,14 @@ public class RentalController : ControllerBase
 
         try
         {
-            var rental = _rentalService.CreateRental(request.CustomerId, request.TrailerId, request.StartDate,
+            var rental = await _rentalService.CreateRental(request.CustomerId, request.TrailerId, request.StartDate,
                 request.EndDate, request.IsInsured);
 
             if (rental == null)
             {
                 return StatusCode(500, "An error occurred while creating the rental.");
             }
-
+            
             var response = new RentalResponse(
                 rental?.Id ?? 0,
                 rental?.Customer?.Id ?? 0,
@@ -46,6 +46,7 @@ public class RentalController : ControllerBase
                 rental?.Price?.Amount ?? 0,
                 rental?.IsInsured ?? false
             );
+            
 
             return CreatedAtAction(nameof(GetRentalById), new { id = response.Id }, response);
         }

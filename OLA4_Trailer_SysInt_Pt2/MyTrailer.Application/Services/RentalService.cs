@@ -1,4 +1,5 @@
 using MyTrailer.Domain.Aggregates;
+using MyTrailer.Domain.ValueObjects;
 using MyTrailer.Infrastructure;
 
 namespace MyTrailer.Application.Services
@@ -8,16 +9,18 @@ namespace MyTrailer.Application.Services
         private readonly IRentalRepository _rentalRepository;
         private readonly ITrailerRepository _trailerRepository;
         private readonly ICustomerRepository _customerRepository;
+        private readonly PaymentService _paymentService;
 
         public RentalService(IRentalRepository rentalRepository, ITrailerRepository trailerRepository,
-            ICustomerRepository customerRepository)
+            ICustomerRepository customerRepository, PaymentService paymentService)
         {
             _rentalRepository = rentalRepository;
             _trailerRepository = trailerRepository;
             _customerRepository = customerRepository;
+            _paymentService = paymentService;
         }
 
-        public Rental CreateRental(int customerId, int trailerId, DateTime startDate, DateTime endDate, bool isInsured)
+        public async Task<Rental> CreateRental(int customerId, int trailerId, DateTime startDate, DateTime endDate, bool isInsured)
         {
             var trailer = _trailerRepository.GetById(trailerId);
             if (trailer == null || trailer.IsRented)
@@ -38,10 +41,9 @@ namespace MyTrailer.Application.Services
                 throw new ArgumentException("Start date must be earlier than end date.");
             }
 
-
-            var rental = Rental.Create(customer, trailer, startDate, endDate, isInsured);
-            rental.CalculatePrice();
-
+            var price = await _paymentService.FetchInsurancePrice(isInsured);
+            var rental = new Rental(customer, trailer, new Price(price), startDate, endDate, isInsured);
+            
 
             _rentalRepository.Add(rental);
             _rentalRepository.SaveChanges();
